@@ -25,3 +25,15 @@ function unroll(obj) {
 	});
 	return vs;
 }
+
+function roll(arr) {
+	let obj = {};
+	arr.forEach(a => {
+		if (!obj[a]) {
+			obj[a] = 1;
+		} else {
+			++obj[a];
+		}
+	});
+	return obj;
+}
