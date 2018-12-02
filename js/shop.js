@@ -10,10 +10,12 @@ class Store {
 		];
 		this.queue = [];
 	}
-	income() {
-	}
 	open() {
+		this.queue = _.shuffle(this.gods.filter(g => g.will));
 	}
-	close() {
+	interact(choice) {
+		let g = this.queue.pop();
+		g.mind = choice;
+		// TODO graphics?
 	}
 }

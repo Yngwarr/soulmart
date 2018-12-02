@@ -1,7 +1,6 @@
 const INIT_MOOD = 2;
 const INIT_APPETITE = [5, 3];
-//const INIT_STOCK = 20;
-const INIT_STOCK = 0;
+const INIT_STOCK = 20;
 
 const GOD_INIT = -1;
 // indices, y'know

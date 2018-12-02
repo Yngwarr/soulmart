@@ -5,8 +5,9 @@ class Village {
 		this.year = 0;
 	}
 	new_game() {
-		// TODO show brief
-		this.new_year();
+		// TODO missions
+		village.state = new State();
+		store.open();
 	}
 	new_year() {
 		// computes the wills of the gods
@@ -24,11 +25,11 @@ class Village {
 		// mutual destructions of wills
 		let md = (ws, w1, w2) => {
 			if (!ws[w1] || !ws[w2]) return;
-			console.log(`${w1}: ${ws[w1]}, ${w2}: ${ws[w2]}`);
+			//console.log(`${w1}: ${ws[w1]}, ${w2}: ${ws[w2]}`);
 			let m = Math.min(ws[w1], ws[w2]);
 			ws[w1] -= m;
 			ws[w2] -= m;
-			console.log(`${w1}: ${ws[w1]}, ${w2}: ${ws[w2]}`);
+			//console.log(`${w1}: ${ws[w1]}, ${w2}: ${ws[w2]}`);
 		};
 		md(wo, "war", "birthrate");
 		md(wo, "war", "fun");
@@ -45,8 +46,9 @@ class Village {
 		// TODO increase the stock the right way
 		store.stock += 20;
 
-		// TODO year++
 		++village.year;
+		store.open();
+
 		console.log(`year ${village.year}, stock: ${store.stock}`);
 		console.log(`state: ${unroll(village.state).join(', ')}`);
 	}

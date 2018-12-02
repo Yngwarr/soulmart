@@ -9,9 +9,13 @@ class God {
 	}
 	// the will to come
 	get will() {
-		return mood !== 0;
+		return this.mood !== 0;
 	}
 	get choice() {
+		if (!this.will) {
+			this.mood = 1;
+			return [];
+		}
 		let keys = Object.keys(this.state)
 			.filter(k => this.state[k][this.mind] > 0);
 		let st = {};
