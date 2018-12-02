@@ -12,6 +12,12 @@ const shop_file = '/img/shop.png';
 const land_file = '/img/land.png';
 const wigwam_file = '/img/wigwam.png';
 
+const odin_file = '/img/gods/odin.png';
+const dajbog_file = '/img/gods/dajbog.png';
+const dionysus_file = '/img/gods/dionysus.png';
+const anubis_file = '/img/gods/anubis.png';
+const aphrodite_file = '/img/gods/aphrodite.png';
+
 let store;
 let village;
 
@@ -205,6 +211,10 @@ function land_button_next_click() {
     buttons_choise_cont.visible = false;
     land_scene.visible = false;
     shop_scene.visible = true;
+}
+
+function set_god(god_name) {
+    console.log('set god: ' + god_name);
 }
 
 // {a: 2, b: 1} -> ["a", "a", "b"]
