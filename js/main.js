@@ -18,6 +18,12 @@ const dionysus_file = '/img/gods/dionysus.png';
 const anubis_file = '/img/gods/anubis.png';
 const aphrodite_file = '/img/gods/aphrodite.png';
 
+var odin_sprite;
+var dajbog_sprite;
+var dionysus_sprite;
+var anubis_sprite;
+var aphrodite_sprite;
+
 let store;
 let village;
 
@@ -164,12 +170,23 @@ function pixi_setup() {
     desc_scene.addChild(desc_back);
 
     // экран магазина
-    var odin_sprite = new PIXI.Sprite(PIXI.loader.resources[odin_file].texture);
-    var dajbog_sprite = new PIXI.Sprite(PIXI.loader.resources[dajbog_file].texture);
-    var dionysus_sprite = new PIXI.Sprite(PIXI.loader.resources[dionysus_file].texture);
-    var anubis_sprite = new PIXI.Sprite(PIXI.loader.resources[anubis_file].texture);
-    var aphrodite_sprite = new PIXI.Sprite(PIXI.loader.resources[aphrodite_file].texture);
+    odin_sprite = new PIXI.Sprite(PIXI.loader.resources[odin_file].texture);
+    dajbog_sprite = new PIXI.Sprite(PIXI.loader.resources[dajbog_file].texture);
+    dionysus_sprite = new PIXI.Sprite(PIXI.loader.resources[dionysus_file].texture);
+    anubis_sprite = new PIXI.Sprite(PIXI.loader.resources[anubis_file].texture);
+    aphrodite_sprite = new PIXI.Sprite(PIXI.loader.resources[aphrodite_file].texture);
     shop_scene.addChild(shop);
+    odin_sprite.visible = false;
+    dajbog_sprite.visible = false;
+    dionysus_sprite.visible = false;
+    anubis_sprite.visible = false;
+    aphrodite_sprite.visible = false;
+    shop_scene.addChild(odin_sprite);
+    shop_scene.addChild(dajbog_sprite);
+    shop_scene.addChild(dionysus_sprite);
+    shop_scene.addChild(anubis_sprite);
+    shop_scene.addChild(aphrodite_sprite);
+
 
     game.stage.addChild(start_scene);
     game.stage.addChild(shop_scene);
@@ -225,6 +242,19 @@ function land_button_next_click() {
 
 function set_god(god_name) {
     console.log('set god: ' + god_name);
+    god_sprite_map = {
+        Odin: odin_sprite,
+        Dajbog: dajbog_sprite,
+        Dionysus: dionysus_sprite,
+        Anubis: anubis_sprite,
+        Aphrodite: aphrodite_sprite
+    }
+    odin_sprite.visible = false;
+    dajbog_sprite.visible = false;
+    dionysus_sprite.visible = false;
+    anubis_sprite.visible = false;
+    aphrodite_sprite.visible = false;
+    god_sprite_map[god_name].visible = true;
 }
 
 function show_population(pop) {
@@ -249,6 +279,10 @@ function answer_n_click() {
 
 function answer_b_click() {
 	ans('b');
+}
+
+function turn_end() {
+
 }
 
 // {a: 2, b: 1} -> ["a", "a", "b"]
