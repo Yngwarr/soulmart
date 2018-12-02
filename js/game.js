@@ -12,6 +12,8 @@ function iterate() {
 	}
 	let god = _.last(store.queue);
 	let name = god.name;
+	set_god(name);
+
 	let pronoun = name === "Aphrodite" ? 'She' : 'He';
 	console.log(`You see ${name}. ${pronoun} asks for ${god.appetite[0]} souls.`);
 	console.log(`You have ${store.stock} souls. What you're gonna do? (y, n, b)`);
