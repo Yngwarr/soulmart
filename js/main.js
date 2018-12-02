@@ -12,7 +12,14 @@ const shop_file = '/img/shop.jpg';
 const land_file = '/img/land.jpg';
 const wigwam_file = '/img/wigwam.png';
 
+let store;
+let village;
+
 function init() {
+	store = new Store(INIT_STOCK);
+	village = new Village();
+
+	game = new PIXI.Application(WIDTH, HEIGHT);
     game = new PIXI.Application(WIDTH, HEIGHT);
     document.getElementById('game_field').appendChild(game.view);
     PIXI.loader
@@ -179,4 +186,28 @@ function button_choise_back_click() {
     console.log('button_ch_back_log');
     buttons_choise_cont.visible = false;
     buttons_first_cont.visible = true;
+}
+
+// {a: 2, b: 1} -> ["a", "a", "b"]
+function unroll(obj) {
+	let keys = Object.keys(obj);
+	let vs = [];
+	keys.forEach(k => {
+		for (let i = obj[k]; i > 0; --i) {
+			vs.push(k);
+		}
+	});
+	return vs;
+}
+
+function roll(arr) {
+	let obj = {};
+	arr.forEach(a => {
+		if (!obj[a]) {
+			obj[a] = 1;
+		} else {
+			++obj[a];
+		}
+	});
+	return obj;
 }
