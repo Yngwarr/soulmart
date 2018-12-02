@@ -8,8 +8,8 @@ var land_scene;
 var desc_scene;
 var buttons_first_cont;
 var buttons_choise_cont;
-const shop_file = '/img/shop.jpg';
-const land_file = '/img/land.jpg';
+const shop_file = '/img/shop.png';
+const land_file = '/img/land.png';
 const wigwam_file = '/img/wigwam.png';
 
 function init() {
@@ -42,8 +42,17 @@ function pixi_setup() {
         wigwam.position.set(wigwam_positions[i][0], wigwam_positions[i][1]);
         wigwams_container.addChild(wigwam);
     }
+
+    var land_button_next = new PIXI.Text('Next >>', button_style);
+    land_button_next.position.set(500, 500);
+    land_button_next.buttonMode = true;
+    land_button_next.interactive = true;
+    land_button_next.on('pointerdown', land_button_next_click);
+    land_scene.addChild(land_button_next);
+
     land_scene.addChild(wigwams_container);
 
+    let start_sprite= new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
     let shop = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
 
     // начальное меню
@@ -56,7 +65,7 @@ function pixi_setup() {
     button_start.on('pointerdown', button_start_click);
     buttons_first_cont.addChild(button_start);
 
-    var button_start_choise = new PIXI.Text('Choise mission', button_style);
+    var button_start_choise = new PIXI.Text('Choice mission', button_style);
     button_start_choise.position.set(500, 200);
     button_start_choise.buttonMode = true;
     button_start_choise.interactive = true;
@@ -109,7 +118,7 @@ function pixi_setup() {
     buttons_choise_cont.addChild(button_choise_back);
 
     // добавление на экран прилавка
-    start_scene.addChild(shop);
+    start_scene.addChild(start_sprite);
     // добавлние начального меню
     start_scene.addChild(buttons_first_cont);
     // добавлние и скрытие выбора миссии
@@ -135,6 +144,9 @@ function pixi_setup() {
     desc_back.interactive = true;
     desc_back.on('pointerdown', desc_back_click);
     desc_scene.addChild(desc_back);
+
+    // экран магазина
+    shop_scene.addChild(shop);
 
     game.stage.addChild(start_scene);
     game.stage.addChild(shop_scene);
@@ -179,4 +191,11 @@ function button_choise_back_click() {
     console.log('button_ch_back_log');
     buttons_choise_cont.visible = false;
     buttons_first_cont.visible = true;
+}
+
+function land_button_next_click() {
+    console.log('land_button_nt_click');
+    buttons_choise_cont.visible = false;
+    land_scene.visible = false;
+    shop_scene.visible = true;
 }
