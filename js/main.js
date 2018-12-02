@@ -18,6 +18,8 @@ const dionysus_file = '/img/gods/dionysus.png';
 const anubis_file = '/img/gods/anubis.png';
 const aphrodite_file = '/img/gods/aphrodite.png';
 
+const shop_buttons_file = '/img/shop_buttons.png';
+
 var odin_sprite;
 var dajbog_sprite;
 var dionysus_sprite;
@@ -43,6 +45,7 @@ function init() {
         .add(dionysus_file)
         .add(anubis_file)
         .add(aphrodite_file)
+        .add(shop_buttons_file)
         .load(pixi_setup);
 }
 
@@ -55,7 +58,7 @@ function pixi_setup() {
     shop_scene.visible = false;
     desc_scene.visible = false;
 
-    var button_style = new PIXI.TextStyle({fill: '#ffffff', fontSize: 36});
+    var button_style = new PIXI.TextStyle({fill: '#510675', fontSize: 36});
 
     let land = new PIXI.Sprite(PIXI.loader.resources[land_file].texture);
     land_scene.addChild(land);
@@ -187,6 +190,35 @@ function pixi_setup() {
     shop_scene.addChild(anubis_sprite);
     shop_scene.addChild(aphrodite_sprite);
 
+    // кнопки ответа богу
+    shop_butons = new PIXI.Sprite(PIXI.loader.resources[shop_buttons_file].texture);
+    shop_scene.addChild(shop_butons);
+
+    var answer_y = new PIXI.Text('OK', button_style);
+    answer_y.position.set(100, 495);
+    answer_y.buttonMode = true;
+    answer_y.interactive = true;
+    answer_y.on('pointerdown', answer_y_click);
+    shop_scene.addChild(answer_y);
+
+    var answer_n = new PIXI.Text('No', button_style);
+    answer_n.position.set(350, 495);
+    answer_n.buttonMode = true;
+    answer_n.interactive = true;
+    answer_n.on('pointerdown', answer_n_click);
+    shop_scene.addChild(answer_n);
+
+    var answer_b = new PIXI.Text('Meh', button_style);
+    answer_b.position.set(600, 495);
+    answer_b.buttonMode = true;
+    answer_b.interactive = true;
+    answer_b.on('pointerdown', answer_b_click);
+    shop_scene.addChild(answer_b);
+
+    
+    text_soul = new PIXI.Text('You have ', button_style);
+    text_soul.position.set(500, 50);
+    shop_scene.addChild(text_soul);
 
     game.stage.addChild(start_scene);
     game.stage.addChild(shop_scene);
