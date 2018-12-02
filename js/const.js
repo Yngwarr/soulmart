@@ -40,3 +40,9 @@ const APHRODITE_STATE = {
 	war: [1, 1, 1],
 	birthrate: [1, 0, 0],
 };
+
+function level(n) {
+	switch (n) {
+		case 0: return new State();
+	}
+}

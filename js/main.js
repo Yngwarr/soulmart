@@ -162,9 +162,9 @@ function pixi_setup() {
 }
 
 function button_start_click() {
-    console.log('button_st_log');
     land_scene.visible = true;
     start_scene.visible = false;
+	play();
 }
 
 function button_start_choise_click() {

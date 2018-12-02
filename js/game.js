@@ -8,7 +8,7 @@ function iterate() {
 	if (store.queue.length === 0) {
 		console.log("That's all for today, time to close the store.");
 		village.new_year();
-		iterate();
+		return;
 	}
 	let god = _.last(store.queue);
 	let name = god.name;
