@@ -12,16 +12,18 @@ class God {
 		return this.mood !== 0;
 	}
 	get choice() {
-		if (!this.will) {
-			this.mood = 1;
-			return [];
-		}
+		if (!this.will) this.mind = GOD_BAD;
 		let keys = Object.keys(this.state)
 			.filter(k => this.state[k][this.mind] > 0);
 		let st = {};
 		keys.forEach(k => {
 			st[k] = this.state[k][this.mind];
 		});
+
+		if (!this.will) {
+			this.mood = 1;
+			return _.sample(unroll(st));
+		}
 
 		switch (this.mind) {
 			case GOD_GOOD: return unroll(st);

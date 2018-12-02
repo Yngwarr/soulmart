@@ -1,6 +1,7 @@
 const INIT_MOOD = 2;
 const INIT_APPETITE = [5, 3];
-const INIT_STOCK = 20;
+const INIT_STOCK = 18;
+const INIT_POPULATION = 1000;
 
 const GOD_INIT = -1;
 // indices, y'know
@@ -43,6 +44,9 @@ const APHRODITE_STATE = {
 
 function level(n) {
 	switch (n) {
-		case 0: return new State();
+		case 0: return new State({famine: 3, war: 1});
+		case 1: return new State({war: 3, plague: 1});
+		case 2: return new State({plague: 3, grief: 2});
+		case 3: return new State({grief: 5, famine: 2});
 	}
 }
