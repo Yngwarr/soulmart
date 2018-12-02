@@ -227,6 +227,30 @@ function set_god(god_name) {
     console.log('set god: ' + god_name);
 }
 
+function show_population(pop) {
+}
+
+function show_stock(st) {
+}
+
+function update_population(pop) {
+}
+
+function update_stock(st) {
+}
+
+function answer_y_click() {
+	ans('y');
+}
+
+function answer_n_click() {
+	ans('n');
+}
+
+function answer_b_click() {
+	ans('b');
+}
+
 // {a: 2, b: 1} -> ["a", "a", "b"]
 function unroll(obj) {
 	let keys = Object.keys(obj);
