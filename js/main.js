@@ -8,15 +8,15 @@ var land_scene;
 var desc_scene;
 var buttons_first_cont;
 var buttons_choise_cont;
-const shop_file = '/img/shop.png';
-const land_file = '/img/land.png';
-const wigwam_file = '/img/wigwam.png';
+const shop_file = 'img/shop.png';
+const land_file = 'img/land.png';
+const wigwam_file = 'img/wigwam.png';
 
-const odin_file = '/img/gods/odin.png';
-const dajbog_file = '/img/gods/dajbog.png';
-const dionysus_file = '/img/gods/dionysus.png';
-const anubis_file = '/img/gods/anubis.png';
-const aphrodite_file = '/img/gods/aphrodite.png';
+const odin_file = 'img/gods/odin.png';
+const dajbog_file = 'img/gods/dajbog.png';
+const dionysus_file = 'img/gods/dionysus.png';
+const anubis_file = 'img/gods/anubis.png';
+const aphrodite_file = 'img/gods/aphrodite.png';
 
 const shop_buttons_file = '/img/shop_buttons.png';
 
