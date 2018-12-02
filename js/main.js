@@ -108,12 +108,12 @@ function pixi_setup() {
     //button_start_choise.on('pointerdown', button_start_choise_click);
     //buttons_first_cont.addChild(button_start_choise);
 
-    //var button_desc = new PIXI.Text('Pantheon', button_style);
-    //button_desc.position.set(500, 150);
-    //button_desc.buttonMode = true;
-    //button_desc.interactive = true;
-    //button_desc.on('pointerdown', button_desc_click);
-    //buttons_first_cont.addChild(button_desc);
+	var button_desc = new PIXI.Text('Pantheon', button_style);
+	button_desc.position.set(500, 100);
+	button_desc.buttonMode = true;
+	button_desc.interactive = true;
+	button_desc.on('pointerdown', button_desc_click);
+	buttons_first_cont.addChild(button_desc);
 
     // выбор миссии
     buttons_choise_cont = new PIXI.Container();
