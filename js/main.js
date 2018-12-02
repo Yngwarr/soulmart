@@ -18,7 +18,7 @@ const dionysus_file = 'img/gods/dionysus.png';
 const anubis_file = 'img/gods/anubis.png';
 const aphrodite_file = 'img/gods/aphrodite.png';
 
-const shop_buttons_file = '/img/shop_buttons.png';
+const shop_buttons_file = 'img/shop_buttons.png';
 
 var odin_sprite;
 var dajbog_sprite;
@@ -322,7 +322,7 @@ function update_population(pop) {
 }
 
 function update_stock(st, app) {
-	text_app.text = '"I want ' + app + ' souls!"';
+	text_app.text = '"I want ' + (app ? app : INIT_APPETITE[0]) + ' souls!"';
     text_soul.text = 'You have ' + st + ' souls';
 }
 
