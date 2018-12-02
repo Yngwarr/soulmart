@@ -22,7 +22,6 @@ const shop_buttons_file = 'img/shop_buttons.png';
 
 const panth_file = 'img/pantheon.png';
 
-//const icons_file = 'img/icons.png'
 
 var odin_sprite;
 var dajbog_sprite;
@@ -31,7 +30,9 @@ var anubis_sprite;
 var aphrodite_sprite;
 
 var text_soul;
+var text_app;
 var text_pop;
+var icons = {}
 
 let store;
 let village;
@@ -113,19 +114,19 @@ function pixi_setup() {
     button_start.on('pointerdown', button_start_click);
     buttons_first_cont.addChild(button_start);
 
-    var button_start_choise = new PIXI.Text('Choose disaster', button_style);
-    button_start_choise.position.set(500, 100);
-    button_start_choise.buttonMode = true;
-    button_start_choise.interactive = true;
-    button_start_choise.on('pointerdown', button_start_choise_click);
-    buttons_first_cont.addChild(button_start_choise);
+    //var button_start_choise = new PIXI.Text('Choose disaster', button_style);
+    //button_start_choise.position.set(500, 100);
+    //button_start_choise.buttonMode = true;
+    //button_start_choise.interactive = true;
+    //button_start_choise.on('pointerdown', button_start_choise_click);
+    //buttons_first_cont.addChild(button_start_choise);
 
-    var button_desc = new PIXI.Text('Pantheon', button_style);
-    button_desc.position.set(500, 150);
-    button_desc.buttonMode = true;
-    button_desc.interactive = true;
-    button_desc.on('pointerdown', button_desc_click);
-    buttons_first_cont.addChild(button_desc);
+	var button_desc = new PIXI.Text('Pantheon', button_style);
+	button_desc.position.set(500, 100);
+	button_desc.buttonMode = true;
+	button_desc.interactive = true;
+	button_desc.on('pointerdown', button_desc_click);
+	buttons_first_cont.addChild(button_desc);
 
     // выбор миссии
     buttons_choise_cont = new PIXI.Container();
@@ -241,9 +242,17 @@ function pixi_setup() {
     answer_b.on('pointerdown', answer_b_click);
     shop_scene.addChild(answer_b);
 
+    text_app = new PIXI.Text('"I want ' + INIT_APPETITE[0] + ' souls!', button_style);
+    text_app.position.set(400, 50);
     text_soul = new PIXI.Text('You have ' + INIT_STOCK + ' souls', button_style);
-    text_soul.position.set(400, 50);
+    text_soul.position.set(400, 100);
+    shop_scene.addChild(text_app);
     shop_scene.addChild(text_soul);
+
+	let keys = Object.keys(village.state);
+	for (let i in keys) {
+		// TODO AAAAAGHAGHAGHAAAAA
+	}
 
     game.stage.addChild(start_scene);
     game.stage.addChild(shop_scene);
@@ -330,7 +339,8 @@ function update_population(pop) {
     text_pop.text = 'Population: ' + pop;
 }
 
-function update_stock(st) {
+function update_stock(st, app) {
+	text_app.text = '"I want ' + (app ? app : INIT_APPETITE[0]) + ' souls!"';
     text_soul.text = 'You have ' + st + ' souls';
 }
 
