@@ -174,26 +174,26 @@ function button_start_click() {
 }
 
 function button_start_choise_click() {
-    console.log('button_st_ch_log');
+    //console.log('button_st_ch_log');
     buttons_first_cont.visible = false;
     buttons_choise_cont.visible = true;
 }
 
 function button_desc_click() {
-    console.log('button_desc_log');
+    //console.log('button_desc_log');
     buttons_first_cont.visible = false;
     buttons_choise_cont.visible = false;
     desc_scene.visible = true;
 }
 
 function button_choise_click() {
-    console.log('button_choise_log');
+    //console.log('button_choise_log');
     buttons_choise_cont.visible = false;
     land_scene.visible = true;
 }
 
 function desc_back_click() {
-    console.log('desc_back_log');
+    //console.log('desc_back_log');
     buttons_choise_cont.visible = false;
     buttons_first_cont.visible = true;
     desc_scene.visible = false;
@@ -201,13 +201,13 @@ function desc_back_click() {
 }
 
 function button_choise_back_click() {
-    console.log('button_ch_back_log');
+    //console.log('button_ch_back_log');
     buttons_choise_cont.visible = false;
     buttons_first_cont.visible = true;
 }
 
 function land_button_next_click() {
-    console.log('land_button_nt_click');
+    //console.log('land_button_nt_click');
     buttons_choise_cont.visible = false;
     land_scene.visible = false;
     shop_scene.visible = true;
