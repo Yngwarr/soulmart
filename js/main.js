@@ -1,9 +1,182 @@
 const WIDTH = 800;
 const HEIGHT = 600;
 
-let game;
+var game;
+var start_scene;
+var shop_scene;
+var land_scene;
+var desc_scene;
+var buttons_first_cont;
+var buttons_choise_cont;
+const shop_file = '/img/shop.jpg';
+const land_file = '/img/land.jpg';
+const wigwam_file = '/img/wigwam.png';
 
 function init() {
-	game = new PIXI.Application(WIDTH, HEIGHT);
-	document.getElementById('wrapper').appendChild(game.view);
+    game = new PIXI.Application(WIDTH, HEIGHT);
+    document.getElementById('game_field').appendChild(game.view);
+    PIXI.loader
+        .add(shop_file)
+        .add(land_file)
+        .add(wigwam_file)
+        .load(pixi_setup);
+}
+
+function pixi_setup() {
+    start_scene = new PIXI.Container();
+    shop_scene = new PIXI.Container();
+    desc_scene = new PIXI.Container();
+    land_scene = new PIXI.Container();
+    land_scene.visible = false;
+    shop_scene.visible = false;
+    desc_scene.visible = false;
+
+    var button_style = new PIXI.TextStyle({fill: '#ffffff', fontSize: 36});
+
+    let land = new PIXI.Sprite(PIXI.loader.resources[land_file].texture);
+    land_scene.addChild(land);
+    let wigwams_container = new PIXI.particles.ParticleContainer();
+    let wigwam_positions = [[113, 405], [307, 307], [472, 262], [553, 434], [670, 300]];
+    for(var i = 0; i < 5; i++) {
+        var wigwam = new PIXI.Sprite(PIXI.loader.resources[wigwam_file].texture);
+        wigwam.position.set(wigwam_positions[i][0], wigwam_positions[i][1]);
+        wigwams_container.addChild(wigwam);
+    }
+    land_scene.addChild(wigwams_container);
+
+    let shop = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
+
+    // начальное меню
+    buttons_first_cont = new PIXI.Container();
+
+    var button_start = new PIXI.Text('Start', button_style);
+    button_start.position.set(500, 100);
+    button_start.buttonMode = true;
+    button_start.interactive = true;
+    button_start.on('pointerdown', button_start_click);
+    buttons_first_cont.addChild(button_start);
+
+    var button_start_choise = new PIXI.Text('Choise mission', button_style);
+    button_start_choise.position.set(500, 200);
+    button_start_choise.buttonMode = true;
+    button_start_choise.interactive = true;
+    button_start_choise.on('pointerdown', button_start_choise_click);
+    buttons_first_cont.addChild(button_start_choise);
+
+    var button_desc = new PIXI.Text('Pantheon', button_style);
+    button_desc.position.set(500, 300);
+    button_desc.buttonMode = true;
+    button_desc.interactive = true;
+    button_desc.on('pointerdown', button_desc_click);
+    buttons_first_cont.addChild(button_desc);
+
+    // выбор миссии
+    buttons_choise_cont = new PIXI.Container();
+
+    var button_choise_hunger = new PIXI.Text('Hunger', button_style);
+    button_choise_hunger.position.set(500, 100);
+    button_choise_hunger.buttonMode = true;
+    button_choise_hunger.interactive = true;
+    button_choise_hunger.on('pointerdown', button_choise_click);
+    buttons_choise_cont.addChild(button_choise_hunger);
+
+    var button_choise_war = new PIXI.Text('War', button_style);
+    button_choise_war.position.set(500, 200);
+    button_choise_war.buttonMode = true;
+    button_choise_war.interactive = true;
+    button_choise_war.on('pointerdown', button_choise_click);
+    buttons_choise_cont.addChild(button_choise_war);
+
+    var button_choise_disease = new PIXI.Text('Disease', button_style);
+    button_choise_disease.position.set(500, 300);
+    button_choise_disease.buttonMode = true;
+    button_choise_disease.interactive = true;
+    button_choise_disease.on('pointerdown', button_choise_click);
+    buttons_choise_cont.addChild(button_choise_disease);
+
+    var button_choise_sadness = new PIXI.Text('Sadness', button_style);
+    button_choise_sadness.position.set(500, 400);
+    button_choise_sadness.buttonMode = true;
+    button_choise_sadness.interactive = true;
+    button_choise_sadness.on('pointerdown', button_choise_click);
+    buttons_choise_cont.addChild(button_choise_sadness);
+
+    var button_choise_back = new PIXI.Text('<< Back', button_style);
+    button_choise_back.position.set(500, 530);
+    button_choise_back.buttonMode = true;
+    button_choise_back.interactive = true;
+    button_choise_back.on('pointerdown', button_choise_back_click);
+    buttons_choise_cont.addChild(button_choise_back);
+
+    // добавление на экран прилавка
+    start_scene.addChild(shop);
+    // добавлние начального меню
+    start_scene.addChild(buttons_first_cont);
+    // добавлние и скрытие выбора миссии
+    buttons_choise_cont.visible = false;
+    start_scene.addChild(buttons_choise_cont);
+
+    // экран описания богов
+    var desc_1 = new PIXI.Text('God 1', button_style);
+    desc_1.position.set(100, 100);
+    desc_scene.addChild(desc_1);
+
+    var desc_2 = new PIXI.Text('God 2', button_style);
+    desc_2.position.set(100, 200);
+    desc_scene.addChild(desc_2);
+
+    var desc_3 = new PIXI.Text('God 3', button_style);
+    desc_3.position.set(100, 300);
+    desc_scene.addChild(desc_3);
+
+    var desc_back = new PIXI.Text('<< Back', button_style);
+    desc_back.position.set(100, 500);
+    desc_back.buttonMode = true;
+    desc_back.interactive = true;
+    desc_back.on('pointerdown', desc_back_click);
+    desc_scene.addChild(desc_back);
+
+    game.stage.addChild(start_scene);
+    game.stage.addChild(shop_scene);
+    game.stage.addChild(land_scene);
+    game.stage.addChild(desc_scene);
+}
+
+function button_start_click() {
+    console.log('button_st_log');
+    land_scene.visible = true;
+    start_scene.visible = false;
+}
+
+function button_start_choise_click() {
+    console.log('button_st_ch_log');
+    buttons_first_cont.visible = false;
+    buttons_choise_cont.visible = true;
+}
+
+function button_desc_click() {
+    console.log('button_desc_log');
+    buttons_first_cont.visible = false;
+    buttons_choise_cont.visible = false;
+    desc_scene.visible = true;
+}
+
+function button_choise_click() {
+    console.log('button_choise_log');
+    buttons_choise_cont.visible = false;
+    land_scene.visible = true;
+}
+
+function desc_back_click() {
+    console.log('desc_back_log');
+    buttons_choise_cont.visible = false;
+    buttons_first_cont.visible = true;
+    desc_scene.visible = false;
+    start_scene.visible = true;
+}
+
+function button_choise_back_click() {
+    console.log('button_ch_back_log');
+    buttons_choise_cont.visible = false;
+    buttons_first_cont.visible = true;
 }
