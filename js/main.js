@@ -239,6 +239,11 @@ function button_start_click() {
 	play();
 }
 
+function show_land() {
+    land_scene.visible = true;
+    start_scene.visible = false;
+}
+
 function button_start_choise_click() {
 	console.log('button_st_ch_log');
     buttons_first_cont.visible = false;
