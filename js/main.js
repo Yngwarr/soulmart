@@ -71,7 +71,7 @@ function pixi_setup() {
     }
 
     var land_button_next = new PIXI.Text('Next >>', button_style);
-    land_button_next.position.set(500, 500);
+    land_button_next.position.set(500, 530);
     land_button_next.buttonMode = true;
     land_button_next.interactive = true;
     land_button_next.on('pointerdown', land_button_next_click);
@@ -86,21 +86,21 @@ function pixi_setup() {
     buttons_first_cont = new PIXI.Container();
 
     var button_start = new PIXI.Text('Start', button_style);
-    button_start.position.set(500, 100);
+    button_start.position.set(500, 50);
     button_start.buttonMode = true;
     button_start.interactive = true;
     button_start.on('pointerdown', button_start_click);
     buttons_first_cont.addChild(button_start);
 
-    var button_start_choise = new PIXI.Text('Choice mission', button_style);
-    button_start_choise.position.set(500, 200);
+    var button_start_choise = new PIXI.Text('Choose disaster', button_style);
+    button_start_choise.position.set(500, 100);
     button_start_choise.buttonMode = true;
     button_start_choise.interactive = true;
     button_start_choise.on('pointerdown', button_start_choise_click);
     buttons_first_cont.addChild(button_start_choise);
 
     var button_desc = new PIXI.Text('Pantheon', button_style);
-    button_desc.position.set(500, 300);
+    button_desc.position.set(500, 150);
     button_desc.buttonMode = true;
     button_desc.interactive = true;
     button_desc.on('pointerdown', button_desc_click);
@@ -109,36 +109,36 @@ function pixi_setup() {
     // выбор миссии
     buttons_choise_cont = new PIXI.Container();
 
-    var button_choise_hunger = new PIXI.Text('Hunger', button_style);
-    button_choise_hunger.position.set(500, 100);
+    var button_choise_hunger = new PIXI.Text('Famine', button_style);
+    button_choise_hunger.position.set(500, 50);
     button_choise_hunger.buttonMode = true;
     button_choise_hunger.interactive = true;
     button_choise_hunger.on('pointerdown', button_choise_click);
     buttons_choise_cont.addChild(button_choise_hunger);
 
     var button_choise_war = new PIXI.Text('War', button_style);
-    button_choise_war.position.set(500, 200);
+    button_choise_war.position.set(500, 100);
     button_choise_war.buttonMode = true;
     button_choise_war.interactive = true;
     button_choise_war.on('pointerdown', button_choise_click);
     buttons_choise_cont.addChild(button_choise_war);
 
-    var button_choise_disease = new PIXI.Text('Disease', button_style);
-    button_choise_disease.position.set(500, 300);
+    var button_choise_disease = new PIXI.Text('Plague', button_style);
+    button_choise_disease.position.set(500, 150);
     button_choise_disease.buttonMode = true;
     button_choise_disease.interactive = true;
     button_choise_disease.on('pointerdown', button_choise_click);
     buttons_choise_cont.addChild(button_choise_disease);
 
-    var button_choise_sadness = new PIXI.Text('Sadness', button_style);
-    button_choise_sadness.position.set(500, 400);
+    var button_choise_sadness = new PIXI.Text('Grief', button_style);
+    button_choise_sadness.position.set(500, 200);
     button_choise_sadness.buttonMode = true;
     button_choise_sadness.interactive = true;
     button_choise_sadness.on('pointerdown', button_choise_click);
     buttons_choise_cont.addChild(button_choise_sadness);
 
     var button_choise_back = new PIXI.Text('<< Back', button_style);
-    button_choise_back.position.set(500, 530);
+    button_choise_back.position.set(500, 300);
     button_choise_back.buttonMode = true;
     button_choise_back.interactive = true;
     button_choise_back.on('pointerdown', button_choise_back_click);
@@ -227,13 +227,14 @@ function pixi_setup() {
 }
 
 function button_start_click() {
+	village.state = level(_.sample([0, 1, 2, 3]));
     land_scene.visible = true;
     start_scene.visible = false;
 	play();
 }
 
 function button_start_choise_click() {
-    //console.log('button_st_ch_log');
+	console.log('button_st_ch_log');
     buttons_first_cont.visible = false;
     buttons_choise_cont.visible = true;
 }

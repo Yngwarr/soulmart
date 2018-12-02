@@ -1,6 +1,6 @@
 class Village {
 	constructor(st) {
-		this.population = 20;
+		this.population = INIT_POPULATION;
 		this.state = new State(st);
 		this.year = 0;
 	}
@@ -43,13 +43,47 @@ class Village {
 		// apply the wills
 		village.state = wo;
 
-		// TODO increase the stock the right way
-		store.stock += 20;
+		// change the population
+		let new_pop = 0;
+		let stock_gen = 0;
+		unroll(wo).forEach(w => {
+			switch (w) {
+				case "war":
+				case "plague":
+					new_pop -= 50;
+					--stock_gen;
+					break;
+				case "famine":
+				case "drought":
+					new_pop -= 25;
+					--stock_gen;
+					break;
+				case "birthrate":
+				case "fun":
+					new_pop += 50;
+					++stock_gen;
+					break;
+				case "yield":
+					new_pop += 25;
+					++stock_gen;
+					break;
+				case "grief":
+					++stock_gen;
+					break;
+			}
+		});
+
+		// increase the stock the right way
+		store.stock += INIT_STOCK + 3 + stock_gen;
+		village.population += new_pop;
 
 		++village.year;
 		store.open();
 
-		console.log(`year ${village.year}, stock: ${store.stock}`);
+		console.log(`year ${village.year}, stock: ${store.stock}, pop: ${village.population}`);
 		console.log(`state: ${unroll(village.state).join(', ')}`);
+		if (village.population === 0) {
+			console.log("Game Over");
+		}
 	}
 }

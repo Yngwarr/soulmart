@@ -44,6 +44,7 @@ function ans(ch) {
 				return;
 			}
 			store.stock -= lo;
+			god.mood -= _.sample([0, 1])
 			console.log('"Err, I\'m short on it..."');
 			break;
 		default:
