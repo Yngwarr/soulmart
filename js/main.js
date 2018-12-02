@@ -32,6 +32,11 @@ function init() {
         .add(shop_file)
         .add(land_file)
         .add(wigwam_file)
+        .add(odin_file)
+        .add(dajbog_file)
+        .add(dionysus_file)
+        .add(anubis_file)
+        .add(aphrodite_file)
         .load(pixi_setup);
 }
 
@@ -159,6 +164,11 @@ function pixi_setup() {
     desc_scene.addChild(desc_back);
 
     // экран магазина
+    var odin_sprite = new PIXI.Sprite(PIXI.loader.resources[odin_file].texture);
+    var dajbog_sprite = new PIXI.Sprite(PIXI.loader.resources[dajbog_file].texture);
+    var dionysus_sprite = new PIXI.Sprite(PIXI.loader.resources[dionysus_file].texture);
+    var anubis_sprite = new PIXI.Sprite(PIXI.loader.resources[anubis_file].texture);
+    var aphrodite_sprite = new PIXI.Sprite(PIXI.loader.resources[aphrodite_file].texture);
     shop_scene.addChild(shop);
 
     game.stage.addChild(start_scene);
