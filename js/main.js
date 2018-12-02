@@ -26,6 +26,9 @@ var dionysus_sprite;
 var anubis_sprite;
 var aphrodite_sprite;
 
+var text_soul;
+var text_pop;
+
 let store;
 let village;
 
@@ -78,6 +81,10 @@ function pixi_setup() {
     land_scene.addChild(land_button_next);
 
     land_scene.addChild(wigwams_container);
+
+    text_pop = new PIXI.Text('Population: ' + INIT_POPULATION, button_style);
+    text_pop.position.set(400, 50);
+    land_scene.addChild(text_pop);
 
     let start_sprite= new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
     let shop = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
@@ -215,9 +222,8 @@ function pixi_setup() {
     answer_b.on('pointerdown', answer_b_click);
     shop_scene.addChild(answer_b);
 
-    
-    text_soul = new PIXI.Text('You have ', button_style);
-    text_soul.position.set(500, 50);
+    text_soul = new PIXI.Text('You have ' + INIT_STOCK + ' souls', button_style);
+    text_soul.position.set(400, 50);
     shop_scene.addChild(text_soul);
 
     game.stage.addChild(start_scene);
@@ -297,9 +303,11 @@ function show_stock(st) {
 }
 
 function update_population(pop) {
+    text_pop.text = 'Population: ' + pop;
 }
 
 function update_stock(st) {
+    text_soul.text = 'You have ' + st + ' souls';
 }
 
 function answer_y_click() {
