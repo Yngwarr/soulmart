@@ -18,7 +18,11 @@ const dionysus_file = 'img/gods/dionysus.png';
 const anubis_file = 'img/gods/anubis.png';
 const aphrodite_file = 'img/gods/aphrodite.png';
 
-const shop_buttons_file = '/img/shop_buttons.png';
+const shop_buttons_file = 'img/shop_buttons.png';
+
+const panth_file = 'img/pantheon.png';
+
+//const icons_file = 'img/icons.png'
 
 var odin_sprite;
 var dajbog_sprite;
@@ -49,6 +53,7 @@ function init() {
         .add(anubis_file)
         .add(aphrodite_file)
         .add(shop_buttons_file)
+        .add(panth_file)
         .load(pixi_setup);
 }
 
@@ -85,6 +90,15 @@ function pixi_setup() {
     text_pop = new PIXI.Text('Population: ' + INIT_POPULATION, button_style);
     text_pop.position.set(400, 50);
     land_scene.addChild(text_pop);
+
+    /*
+    icons = new PIXI.Sprite(PIXI.loader.resources[icons_file].texture);
+    land_scene.addChild(icons);
+
+    text_pop = new PIXI.Text('Population: ' + INIT_POPULATION, button_style);
+    text_pop.position.set(400, 50);
+    land_scene.addChild(text_pop);
+    */
 
     let start_sprite= new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
     let shop = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
@@ -160,6 +174,7 @@ function pixi_setup() {
     start_scene.addChild(buttons_choise_cont);
 
     // экран описания богов
+    /*
     var desc_1 = new PIXI.Text('God 1', button_style);
     desc_1.position.set(100, 100);
     desc_scene.addChild(desc_1);
@@ -171,6 +186,10 @@ function pixi_setup() {
     var desc_3 = new PIXI.Text('God 3', button_style);
     desc_3.position.set(100, 300);
     desc_scene.addChild(desc_3);
+    */
+
+    panth = new PIXI.Sprite(PIXI.loader.resources[panth_file].texture);
+    desc_scene.addChild(panth);
 
     var desc_back = new PIXI.Text('<< Back', button_style);
     desc_back.position.set(100, 500);
