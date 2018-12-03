@@ -86,6 +86,7 @@ function pixi_setup() {
 
     var button_style = new PIXI.TextStyle({fill: '#510675', fontSize: 36});
     var icon_value_style = new PIXI.TextStyle({fill: '#510675', fontSize: 20});
+    var gameover_style = new PIXI.TextStyle({fill: '#510675', fontSize: 70});
     dialog_style = new PIXI.TextStyle({
 		fill: '#510675',
 		fontStyle: 'italic',
@@ -238,20 +239,6 @@ function pixi_setup() {
     start_scene.addChild(buttons_choise_cont);
 
     // экран описания богов
-    /*
-    var desc_1 = new PIXI.Text('God 1', button_style);
-    desc_1.position.set(100, 100);
-    desc_scene.addChild(desc_1);
-
-    var desc_2 = new PIXI.Text('God 2', button_style);
-    desc_2.position.set(100, 200);
-    desc_scene.addChild(desc_2);
-
-    var desc_3 = new PIXI.Text('God 3', button_style);
-    desc_3.position.set(100, 300);
-    desc_scene.addChild(desc_3);
-    */
-
     panth = new PIXI.Sprite(PIXI.loader.resources[panth_file].texture);
     desc_scene.addChild(panth);
 
@@ -339,10 +326,20 @@ function pixi_setup() {
 		//// TODO AAAAAGHAGHAGHAAAAA
 	//}
 
+    // блок с надписью победы и поражения
+    text_win = new PIXI.Text('Win!', gameover_style);
+    text_win.position.set(330, 280);
+    text_win.visible = false;
+    text_gameover = new PIXI.Text('Game over', gameover_style);
+    text_gameover.position.set(230, 280);
+    text_gameover.visible = false;
+
     game.stage.addChild(start_scene);
     game.stage.addChild(shop_scene);
     game.stage.addChild(land_scene);
     game.stage.addChild(desc_scene);
+    game.stage.addChild(text_win);
+    game.stage.addChild(text_gameover);
 }
 
 function dialog_mk_active(text) {
@@ -360,6 +357,7 @@ function dialog_out() {
 }
 
 function button_start_click() {
+    gameover_hide();
 	village.state = level(_.sample([0, 1, 2, 3]));
 	show_land();
 	play();
@@ -380,6 +378,7 @@ function button_desc_click() {
     //console.log('button_desc_log');
     buttons_first_cont.visible = false;
     buttons_choise_cont.visible = false;
+    gameover_hide();
     desc_scene.visible = true;
 }
 
@@ -434,7 +433,8 @@ function set_god(god_name, is_angry) {
 }
 
 function update_population(pop) {
-    text_pop.text = 'Population: ' + pop;
+    //todo: убрать эту функция, после того, как начнёт использоваться update_icon_values(values)
+    text_birthrate.text = pop;
 }
 
 function update_stock(st, app) {
@@ -463,6 +463,24 @@ function update_icon_values(values) {
     text_fun.text = values.fun;
     text_yield.text = values.yield;
     text_birthrate.text = values.birthrate;
+}
+
+function gameover(is_win) {
+    // скрытие лишних элементов и показ стартового экрана
+    buttons_choise_cont.visible = false;
+    buttons_first_cont.visible = true;
+    desc_scene.visible = false;
+    shop_scene.visible = false;
+    land_scene.visible = false;
+    start_scene.visible = true;
+    // вывод надписи победы/поражание
+    text_win.visible = is_win;
+    text_gameover.visible = !is_win;
+}
+
+function gameover_hide() {
+    text_win.visible = false;
+    text_gameover.visible = false;
 }
 
 // {a: 2, b: 1} -> ["a", "a", "b"]
