@@ -86,7 +86,6 @@ function init() {
         .add(dionysus_angry_file)
         .add(anubis_angry_file)
         .add(aphrodite_angry_file)
-        .add(shop_buttons_file)
         .add(panth_file)
         .load(pixi_setup);
 }
@@ -179,15 +178,6 @@ function pixi_setup() {
     text_pop = new PIXI.Text(`Population: ${INIT_POPULATION}`, button_style);
     text_pop.position.set(250, 10);
     land_scene.addChild(text_pop);
-
-    /*
-    icons = new PIXI.Sprite(PIXI.loader.resources[icons_file].texture);
-    land_scene.addChild(icons);
-
-    text_pop = new PIXI.Text('Population: ' + INIT_POPULATION, button_style);
-    text_pop.position.set(400, 50);
-    land_scene.addChild(text_pop);
-    */
 
     let start_sprite= new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
     let shop = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
@@ -396,7 +386,6 @@ function button_out() {
 
 function button_start_click() {
     gameover_hide();
-	village.state = level(_.sample([0, 1, 2, 3]));
 	show_land();
 	play();
 }
@@ -472,8 +461,7 @@ function set_god(god_name, is_angry) {
 }
 
 function update_population(pop) {
-    //todo: убрать эту функция, после того, как начнёт использоваться update_icon_values(values)
-    text_birthrate.text = pop;
+	text_pop.text = 'Population: ' + pop;
 }
 
 function update_stock(st, app) {
@@ -496,8 +484,8 @@ function update_icon_values(values) {
 	}
 }
 
-function answer_y_click() {
-	if (ans('y')) {
+async function answer_y_click() {
+	if (await ans('y')) {
 		update_answers();
 		return;
 	}
@@ -511,12 +499,12 @@ function answer_y_click() {
 	timer_lack = setTimeout(() => { text_lack.visible = false; }, 3000)
 }
 
-function answer_n_click() {
-	if (ans('n')) update_answers();
+async function answer_n_click() {
+	if (await ans('n')) update_answers();
 }
 
-function answer_b_click() {
-	if (ans('b')) {
+async function answer_b_click() {
+	if (await ans('b')) {
 		update_answers();
 		return;
 	}
@@ -548,6 +536,13 @@ function gameover_hide() {
     text_gameover.visible = false;
 }
 
+function toggle_dialog(on) {
+	let _on = !!on;
+	for (let k in answer_line) {
+		answer_line[k].interactive = _on;
+	}
+}
+
 // {a: 2, b: 1} -> ["a", "a", "b"]
 function unroll(obj) {
 	let keys = Object.keys(obj);
@@ -570,4 +565,8 @@ function roll(arr) {
 		}
 	});
 	return obj;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

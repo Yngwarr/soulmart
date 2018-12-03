@@ -5,8 +5,7 @@ class Village {
 		this.year = 0;
 	}
 	new_game() {
-		// TODO missions
-		village.state = new State();
+		village.state = level(_.sample([0, 1, 2, 3]));
 		store.open();
 	}
 	new_year() {
@@ -51,21 +50,21 @@ class Village {
 				case "war":
 				case "plague":
 					new_pop -= 50;
-					--stock_gen;
+					++stock_gen;
 					break;
 				case "famine":
 				case "drought":
 					new_pop -= 25;
-					--stock_gen;
+					++stock_gen;
 					break;
 				case "birthrate":
 				case "fun":
 					new_pop += 50;
-					++stock_gen;
+					--stock_gen;
 					break;
 				case "yield":
 					new_pop += 25;
-					++stock_gen;
+					--stock_gen;
 					break;
 				case "grief":
 					++stock_gen;
@@ -74,7 +73,7 @@ class Village {
 		});
 
 		// increase the stock the right way
-		store.stock += INIT_STOCK + 3 + stock_gen;
+		store.stock += 15 + 3 + stock_gen;
 		village.population += new_pop;
 
 		++village.year;

@@ -19,7 +19,7 @@ function iterate() {
 	}
 	let god = _.last(store.queue);
 	let name = god.name;
-	set_god(name);
+	set_god(name, god.mood === 1);
 	update_stock(store.stock, god.appetite[0]);
 
 	let pronoun = name === "Aphrodite" ? 'She' : 'He';
@@ -27,10 +27,12 @@ function iterate() {
 	console.log(`You have ${store.stock} souls. What you're gonna do? (y, n, b)`);
 }
 
-function ans(ch) {
+async function ans(ch) {
 	let a;
 	let god = _.last(store.queue);
 	let [hi, lo] = god.appetite;
+	let timeout = 0;
+	console.log(god.mood);
 	switch (ch) {
 		case 'y':
 			a = GOD_GOOD;
@@ -44,6 +46,10 @@ function ans(ch) {
 		case 'n':
 			a = GOD_BAD;
 			console.log('"Are you freakin\' kidding me?"');
+			if (god.mood > 1) timeout = 1000;
+			--god.mood;
+			set_god(god.name, true);
+			toggle_dialog(false);
 			break;
 		case 'b':
 			a = GOD_NEUTRAL;
@@ -60,6 +66,8 @@ function ans(ch) {
 			return false;
 	}
 	store.interact(a);
+	await sleep(timeout);
+	toggle_dialog(true);
 	iterate();
 	return true;
 }
