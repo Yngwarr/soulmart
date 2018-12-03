@@ -60,6 +60,25 @@ function ans(ch) {
 	return true;
 }
 
+function lack_thought() {
+	return _.sample([
+		'"I don\'t have that many..."',
+		'"I\'m running low on souls."',
+		'"I won\'t find that many."',
+		'"I don\'t have enough."',
+		'"There\'s too few of souls."',
+	]);
+}
+
+function request(hi) {
+	return _.sample([
+		`"I want ${hi} souls!"`,
+		`"Give me ${hi} souls!"`,
+		`"I'm working on something.\n${hi} souls would be enough."`,
+		`"${hi} souls, please."`,
+	]);
+}
+
 function replies(lo) {
 	let y = [
 		'"Your wish is my honest command!"',
@@ -72,6 +91,7 @@ function replies(lo) {
 		'"Sorry, I\'m really short on this ones."',
 		'"Are you kidding? It\'s a whole lotta souls!"',
 		'"How about no?"',
+		'"I dunno what you\'re up to, but no."'
 	]; 
 	let meh = [
 		`"Isn't it a bit too much for you? Take\n${lo} instead."`,

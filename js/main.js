@@ -34,6 +34,8 @@ var aphrodite_sprite;
 var text_soul;
 var text_app;
 var text_pop;
+var text_lack;
+var timer_lack;
 var icons = {}
 var button_style;
 var button_hover_style;
@@ -275,11 +277,15 @@ function pixi_setup() {
     shop_scene.addChild(answer_line.b);
 
     text_app = new PIXI.Text(`"I want ${INIT_APPETITE[0]} souls!"`, dialog_style);
-    text_app.position.set(500, 50);
-    text_soul = new PIXI.Text(`You have ${INIT_STOCK} souls`, dialog_style);
-    text_soul.position.set(500, 100);
+    text_app.position.set(450, 100);
+    text_soul = new PIXI.Text(`Stock:\n${INIT_STOCK} souls`, dialog_style);
+    text_soul.position.set(650, 480);
+	text_lack = new PIXI.Text('"I don\'t have that many..."', dialog_style);
+	text_lack.position.set(450, 300);
+	text_lack.visible = false;
     shop_scene.addChild(text_app);
     shop_scene.addChild(text_soul);
+    shop_scene.addChild(text_lack);
 
 	//let keys = Object.keys(village.state);
 	//for (let i in keys) {
@@ -396,8 +402,9 @@ function update_population(pop) {
 }
 
 function update_stock(st, app) {
-	text_app.text = '"I want ' + (app ? app : INIT_APPETITE[0]) + ' souls!"';
-    text_soul.text = 'You have ' + st + ' souls';
+	text_app.text = request(app ? app : INIT_APPETITE[0]);
+	text_soul.text = `Stock:\n${st} souls`;
+    //text_soul.text = 'You have ' + st + ' souls';
 }
 
 function update_answers() {
@@ -409,7 +416,18 @@ function update_answers() {
 }
 
 function answer_y_click() {
-	if (ans('y')) update_answers();
+	if (ans('y')) {
+		update_answers();
+		return;
+	}
+	if (timer_lack) {
+		clearTimeout(timer_lack);
+		timer_lack = undefined;
+	} else {
+		text_lack.text = lack_thought();
+	}
+	text_lack.visible = true;
+	timer_lack = setTimeout(() => { text_lack.visible = false; }, 3000)
 }
 
 function answer_n_click() {
@@ -417,7 +435,18 @@ function answer_n_click() {
 }
 
 function answer_b_click() {
-	if (ans('b')) update_answers();
+	if (ans('b')) {
+		update_answers();
+		return;
+	}
+	if (timer_lack) {
+		clearTimeout(timer_lack);
+		timer_lack = undefined;
+	} else {
+		text_lack.text = lack_thought();
+	}
+	text_lack.visible = true;
+	timer_lack = setTimeout(() => { text_lack.visible = false; }, 3000)
 }
 
 // {a: 2, b: 1} -> ["a", "a", "b"]
