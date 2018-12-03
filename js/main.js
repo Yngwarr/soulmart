@@ -19,10 +19,11 @@ const dionysus_file = 'img/gods/dionysus.png';
 const anubis_file = 'img/gods/anubis.png';
 const aphrodite_file = 'img/gods/aphrodite.png';
 
-const shop_buttons_file = 'img/shop_buttons.png';
+//const shop_buttons_file = 'img/shop_buttons.png';
 
 const panth_file = 'img/pantheon.png';
 
+const color = { prim: '#510675', sec: '#4c37a5' };
 
 var odin_sprite;
 var dajbog_sprite;
@@ -34,8 +35,11 @@ var text_soul;
 var text_app;
 var text_pop;
 var icons = {}
+var button_style;
+var button_hover_style;
 var dialog_style;
 var dialog_hover_style;
+var answer_line = {};
 
 let store;
 let village;
@@ -57,7 +61,7 @@ function init() {
         .add(dionysus_file)
         .add(anubis_file)
         .add(aphrodite_file)
-        .add(shop_buttons_file)
+        //.add(shop_buttons_file)
         .add(panth_file)
         .load(pixi_setup);
 }
@@ -71,9 +75,18 @@ function pixi_setup() {
     shop_scene.visible = false;
     desc_scene.visible = false;
 
-    var button_style = new PIXI.TextStyle({fill: '#510675', fontSize: 36});
+    button_style = new PIXI.TextStyle({fill: '#510675', fontSize: 36});
+    button_hover_style = new PIXI.TextStyle({
+		fill: '#fff',
+		fontSize: 36,
+		dropShadow: true,
+		dropShadowColor: color.sec,
+		dropShadowBlur: 6,
+		dropShadowAngle: Math.PI / 6,
+		dropShadowDistance: 2,
+	});
     dialog_style = new PIXI.TextStyle({
-		fill: '#510675',
+		fill: color.prim,
 		fontStyle: 'italic',
 		fontSize: 24,
 		dropShadow: true,
@@ -83,11 +96,11 @@ function pixi_setup() {
 		dropShadowDistance: 0,
 	});
     dialog_hover_style = new PIXI.TextStyle({
-		fill: '#510675',
+		fill: '#fff',
 		fontStyle: 'italic',
 		fontSize: 24,
 		dropShadow: true,
-		dropShadowColor: '#fff',
+		dropShadowColor: color.sec,
 		dropShadowBlur: 6,
 		dropShadowAngle: Math.PI / 6,
 		dropShadowDistance: 2,
@@ -105,14 +118,13 @@ function pixi_setup() {
 
     var land_button_next = new PIXI.Text('Next >>', button_style);
     land_button_next.position.set(500, 530);
-    land_button_next.buttonMode = true;
-    land_button_next.interactive = true;
+	button_mk_active(land_button_next);
     land_button_next.on('pointerdown', land_button_next_click);
     land_scene.addChild(land_button_next);
 
     land_scene.addChild(wigwams_container);
 
-    text_pop = new PIXI.Text('Population: ' + INIT_POPULATION, button_style);
+    text_pop = new PIXI.Text(`Population: ${INIT_POPULATION}`, button_style);
     text_pop.position.set(400, 50);
     land_scene.addChild(text_pop);
 
@@ -134,8 +146,7 @@ function pixi_setup() {
 
     var button_start = new PIXI.Text('Start', button_style);
     button_start.position.set(500, 50);
-    button_start.buttonMode = true;
-    button_start.interactive = true;
+	button_mk_active(button_start);
     button_start.on('pointerdown', button_start_click);
     buttons_first_cont.addChild(button_start);
 
@@ -148,48 +159,47 @@ function pixi_setup() {
 
 	var button_desc = new PIXI.Text('Pantheon', button_style);
 	button_desc.position.set(500, 100);
-	button_desc.buttonMode = true;
-	button_desc.interactive = true;
+	button_mk_active(button_desc);
 	button_desc.on('pointerdown', button_desc_click);
 	buttons_first_cont.addChild(button_desc);
 
     // выбор миссии
     buttons_choise_cont = new PIXI.Container();
 
-    var button_choise_hunger = new PIXI.Text('Famine', button_style);
-    button_choise_hunger.position.set(500, 50);
-    button_choise_hunger.buttonMode = true;
-    button_choise_hunger.interactive = true;
-    button_choise_hunger.on('pointerdown', button_choise_click);
-    buttons_choise_cont.addChild(button_choise_hunger);
+    //var button_choise_hunger = new PIXI.Text('Famine', button_style);
+    //button_choise_hunger.position.set(500, 50);
+    //button_choise_hunger.buttonMode = true;
+    //button_choise_hunger.interactive = true;
+    //button_choise_hunger.on('pointerdown', button_choise_click);
+    //buttons_choise_cont.addChild(button_choise_hunger);
 
-    var button_choise_war = new PIXI.Text('War', button_style);
-    button_choise_war.position.set(500, 100);
-    button_choise_war.buttonMode = true;
-    button_choise_war.interactive = true;
-    button_choise_war.on('pointerdown', button_choise_click);
-    buttons_choise_cont.addChild(button_choise_war);
+    //var button_choise_war = new PIXI.Text('War', button_style);
+    //button_choise_war.position.set(500, 100);
+    //button_choise_war.buttonMode = true;
+    //button_choise_war.interactive = true;
+    //button_choise_war.on('pointerdown', button_choise_click);
+    //buttons_choise_cont.addChild(button_choise_war);
 
-    var button_choise_disease = new PIXI.Text('Plague', button_style);
-    button_choise_disease.position.set(500, 150);
-    button_choise_disease.buttonMode = true;
-    button_choise_disease.interactive = true;
-    button_choise_disease.on('pointerdown', button_choise_click);
-    buttons_choise_cont.addChild(button_choise_disease);
+    //var button_choise_disease = new PIXI.Text('Plague', button_style);
+    //button_choise_disease.position.set(500, 150);
+    //button_choise_disease.buttonMode = true;
+    //button_choise_disease.interactive = true;
+    //button_choise_disease.on('pointerdown', button_choise_click);
+    //buttons_choise_cont.addChild(button_choise_disease);
 
-    var button_choise_sadness = new PIXI.Text('Grief', button_style);
-    button_choise_sadness.position.set(500, 200);
-    button_choise_sadness.buttonMode = true;
-    button_choise_sadness.interactive = true;
-    button_choise_sadness.on('pointerdown', button_choise_click);
-    buttons_choise_cont.addChild(button_choise_sadness);
+    //var button_choise_sadness = new PIXI.Text('Grief', button_style);
+    //button_choise_sadness.position.set(500, 200);
+    //button_choise_sadness.buttonMode = true;
+    //button_choise_sadness.interactive = true;
+    //button_choise_sadness.on('pointerdown', button_choise_click);
+    //buttons_choise_cont.addChild(button_choise_sadness);
 
-    var button_choise_back = new PIXI.Text('<< Back', button_style);
-    button_choise_back.position.set(500, 300);
-    button_choise_back.buttonMode = true;
-    button_choise_back.interactive = true;
-    button_choise_back.on('pointerdown', button_choise_back_click);
-    buttons_choise_cont.addChild(button_choise_back);
+    //var button_choise_back = new PIXI.Text('<< Back', button_style);
+    //button_choise_back.position.set(500, 300);
+    //button_choise_back.buttonMode = true;
+    //button_choise_back.interactive = true;
+    //button_choise_back.on('pointerdown', button_choise_back_click);
+    //buttons_choise_cont.addChild(button_choise_back);
 
     // добавление на экран прилавка
     start_scene.addChild(start_sprite);
@@ -219,8 +229,7 @@ function pixi_setup() {
 
     var desc_back = new PIXI.Text('<< Back', button_style);
     desc_back.position.set(150, 480);
-    desc_back.buttonMode = true;
-    desc_back.interactive = true;
+	button_mk_active(desc_back);
     desc_back.on('pointerdown', desc_back_click);
     desc_scene.addChild(desc_back);
 
@@ -244,33 +253,29 @@ function pixi_setup() {
     shop_scene.addChild(table);
 
     // кнопки ответа богу
-    shop_butons = new PIXI.Sprite(PIXI.loader.resources[shop_buttons_file].texture);
-    shop_scene.addChild(shop_butons);
+    //shop_butons = new PIXI.Sprite(PIXI.loader.resources[shop_buttons_file].texture);
+    //shop_scene.addChild(shop_butons);
 
-    var answer_y = new PIXI.Text('OK', button_style);
-    answer_y.position.set(100, 495);
-    answer_y.buttonMode = true;
-    answer_y.interactive = true;
-    answer_y.on('pointerdown', answer_y_click);
-    shop_scene.addChild(answer_y);
+    answer_line.y = new PIXI.Text('y', dialog_style);
+    answer_line.y.position.set(50, 450);
+	dialog_mk_active(answer_line.y);
+    answer_line.y.on('pointerdown', answer_y_click);
+    shop_scene.addChild(answer_line.y);
 
-    var answer_n = new PIXI.Text('No', button_style);
-    answer_n.position.set(350, 495);
-    answer_n.buttonMode = true;
-    answer_n.interactive = true;
-    answer_n.on('pointerdown', answer_n_click);
-    shop_scene.addChild(answer_n);
+    answer_line.n = new PIXI.Text('n', dialog_style);
+    answer_line.n.position.set(50, 480);
+	dialog_mk_active(answer_line.n);
+    answer_line.n.on('pointerdown', answer_n_click);
+    shop_scene.addChild(answer_line.n);
 
-    var answer_b = new PIXI.Text('Meh', button_style);
-    answer_b.position.set(600, 495);
-    answer_b.buttonMode = true;
-    answer_b.interactive = true;
-    answer_b.on('pointerdown', answer_b_click);
-    shop_scene.addChild(answer_b);
+    answer_line.b = new PIXI.Text('meh', dialog_style);
+    answer_line.b.position.set(50, 510);
+	dialog_mk_active(answer_line.b);
+    answer_line.b.on('pointerdown', answer_b_click);
+    shop_scene.addChild(answer_line.b);
 
     text_app = new PIXI.Text(`"I want ${INIT_APPETITE[0]} souls!"`, dialog_style);
     text_app.position.set(500, 50);
-	dialog_mk_active(text_app);
     text_soul = new PIXI.Text(`You have ${INIT_STOCK} souls`, dialog_style);
     text_soul.position.set(500, 100);
     shop_scene.addChild(text_app);
@@ -288,9 +293,17 @@ function pixi_setup() {
 }
 
 function dialog_mk_active(text) {
+    text.buttonMode = true;
 	text.interactive = true;
 	text.on('pointerover', dialog_hover);
 	text.on('pointerout', dialog_out);
+}
+
+function button_mk_active(butt) {
+    butt.buttonMode = true;
+	butt.interactive = true;
+	butt.on('pointerover', button_hover);
+	butt.on('pointerout', button_out);
 }
 
 function dialog_hover() {
@@ -299,6 +312,14 @@ function dialog_hover() {
 
 function dialog_out() {
 	this.style = dialog_style;
+}
+
+function button_hover() {
+	this.style = button_hover_style;
+}
+
+function button_out() {
+	this.style = button_style;
 }
 
 function button_start_click() {
@@ -347,6 +368,7 @@ function button_choise_back_click() {
 
 function land_button_next_click() {
     //console.log('land_button_nt_click');
+	update_answers();
     buttons_choise_cont.visible = false;
     land_scene.visible = false;
     shop_scene.visible = true;
@@ -378,16 +400,24 @@ function update_stock(st, app) {
     text_soul.text = 'You have ' + st + ' souls';
 }
 
+function update_answers() {
+	let lo = _.last(store.queue).appetite[1];
+	let [y, n, meh] = replies(lo);
+	answer_line.y.text = y;
+	answer_line.n.text = n;
+	answer_line.b.text = meh;
+}
+
 function answer_y_click() {
-	ans('y');
+	if (ans('y')) update_answers();
 }
 
 function answer_n_click() {
-	ans('n');
+	if (ans('n')) update_answers();
 }
 
 function answer_b_click() {
-	ans('b');
+	if (ans('b')) update_answers();
 }
 
 // {a: 2, b: 1} -> ["a", "a", "b"]

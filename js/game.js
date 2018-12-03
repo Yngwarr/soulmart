@@ -32,7 +32,7 @@ function ans(ch) {
 			a = GOD_GOOD;
 			if (store.stock < hi) {
 				console.log('Not enough souls.');
-				return;
+				return false;
 			}
 			store.stock -= hi;
 			console.log('"Sure, why not?"');
@@ -45,7 +45,7 @@ function ans(ch) {
 			a = GOD_NEUTRAL;
 			if (store.stock < lo) {
 				console.log('Not enough souls.');
-				return;
+				return false;
 			}
 			store.stock -= lo;
 			god.mood -= _.sample([0, 1])
@@ -53,8 +53,32 @@ function ans(ch) {
 			break;
 		default:
 			console.log('only y, n and b are allowed.');
-			return;
+			return false;
 	}
 	store.interact(a);
 	iterate();
+	return true;
+}
+
+function replies(lo) {
+	let y = [
+		'"Your wish is my honest command!"',
+		'"Whatever you want."',
+		'"You got a deal!"',
+		'"You got it!"',
+	];
+	let n = [
+		'"No way!"',
+		'"Sorry, I\'m really short on this ones."',
+		'"Are you kidding? It\'s a whole lotta souls!"',
+		'"How about no?"',
+	]; 
+	let meh = [
+		`"Isn't it a bit too much for you? Take\n${lo} instead."`,
+		`"It's about time to tighten your belt. Take\n${lo} or get out."`,
+		`"Even ${lo} souls are too many, but I'm kind\ntoday."`,
+		`"Here are the last ${lo} souls. And don't call\nme a liar."`,
+		`"Are you taking ${lo} souls or what?"`,
+	];
+	return [y, n, meh].map(_.sample);
 }
