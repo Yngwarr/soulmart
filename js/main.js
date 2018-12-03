@@ -13,6 +13,7 @@ const shop_file = 'img/shop.png';
 const land_file = 'img/land.png';
 const wigwam_file = 'img/wigwam.png';
 const table_file = 'img/table.png';
+const logo_file = 'img/logo.png';
 
 // картинки богов (весёлые)
 const odin_file = 'img/gods/odin.png';
@@ -76,6 +77,7 @@ function init() {
 
     PIXI.loader
         .add(shop_file)
+        .add(logo_file)
         .add(land_file)
         .add(wigwam_file)
         .add(table_file)
@@ -193,7 +195,8 @@ function pixi_setup() {
     text_pop.position.set(300, 10);
     land_scene.addChild(text_pop);
 
-    let start_sprite= new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
+    let start_sprite = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
+	let logo = new PIXI.Sprite(PIXI.loader.resources[logo_file].texture);
     let shop = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
     let table = new PIXI.Sprite(PIXI.loader.resources[table_file].texture);
 
@@ -206,13 +209,6 @@ function pixi_setup() {
     button_start.on('pointerdown', button_start_click);
     buttons_first_cont.addChild(button_start);
 
-    //var button_start_choise = new PIXI.Text('Choose disaster', button_style);
-    //button_start_choise.position.set(500, 100);
-    //button_start_choise.buttonMode = true;
-    //button_start_choise.interactive = true;
-    //button_start_choise.on('pointerdown', button_start_choise_click);
-    //buttons_first_cont.addChild(button_start_choise);
-
 	var button_desc = new PIXI.Text('Pantheon', button_style);
 	button_desc.position.set(500, 100);
 	button_mk_active(button_desc);
@@ -222,43 +218,10 @@ function pixi_setup() {
     // выбор миссии
     buttons_choise_cont = new PIXI.Container();
 
-    //var button_choise_hunger = new PIXI.Text('Famine', button_style);
-    //button_choise_hunger.position.set(500, 50);
-    //button_choise_hunger.buttonMode = true;
-    //button_choise_hunger.interactive = true;
-    //button_choise_hunger.on('pointerdown', button_choise_click);
-    //buttons_choise_cont.addChild(button_choise_hunger);
-
-    //var button_choise_war = new PIXI.Text('War', button_style);
-    //button_choise_war.position.set(500, 100);
-    //button_choise_war.buttonMode = true;
-    //button_choise_war.interactive = true;
-    //button_choise_war.on('pointerdown', button_choise_click);
-    //buttons_choise_cont.addChild(button_choise_war);
-
-    //var button_choise_disease = new PIXI.Text('Plague', button_style);
-    //button_choise_disease.position.set(500, 150);
-    //button_choise_disease.buttonMode = true;
-    //button_choise_disease.interactive = true;
-    //button_choise_disease.on('pointerdown', button_choise_click);
-    //buttons_choise_cont.addChild(button_choise_disease);
-
-    //var button_choise_sadness = new PIXI.Text('Grief', button_style);
-    //button_choise_sadness.position.set(500, 200);
-    //button_choise_sadness.buttonMode = true;
-    //button_choise_sadness.interactive = true;
-    //button_choise_sadness.on('pointerdown', button_choise_click);
-    //buttons_choise_cont.addChild(button_choise_sadness);
-
-    //var button_choise_back = new PIXI.Text('<< Back', button_style);
-    //button_choise_back.position.set(500, 300);
-    //button_choise_back.buttonMode = true;
-    //button_choise_back.interactive = true;
-    //button_choise_back.on('pointerdown', button_choise_back_click);
-    //buttons_choise_cont.addChild(button_choise_back);
-
+	logo.position.set(50, 50)
     // добавление на экран прилавка
     start_scene.addChild(start_sprite);
+    start_scene.addChild(logo);
     // добавлние начального меню
     start_scene.addChild(buttons_first_cont);
     // добавлние и скрытие выбора миссии
