@@ -68,7 +68,9 @@ async function ans(ch) {
 				return false;
 			}
 			store.stock -= lo;
-			god.mood -= _.sample([0, 1])
+			let dmood = _.sample([0, 1]);
+			god.mood -= dmood;
+			if (dmood === 1) timeout = 500;
 			console.log('"Err, I\'m short on it..."');
 			break;
 		default:
@@ -99,7 +101,6 @@ function request(hi) {
 		`"I'm working on something.\n${hi} souls would be enough."`,
 		`"${hi} souls, please."`,
 		`"${hi} souls. Now."`,
-		`""`
 	]);
 }
 

@@ -8,6 +8,6 @@ html {
 #game_field {
     width: 800px;
     height: 600px;
-    padding: 0;
-    margin: auto;
+    /*padding: 0;*/
+    /*margin: auto;*/
 }

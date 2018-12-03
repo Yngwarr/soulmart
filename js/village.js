@@ -28,6 +28,7 @@ class Village {
 		if (wo.birthrate >= 3) wo.famine = wo.famine ? wo.famine + 1 : 1;
 		if (wo.yield >= 3) wo.plague = wo.plague ? wo.plague + 1 : 1;
 		if (wo.fun >= 3) wo.famine = wo.famine ? wo.famine + 1 : 1;
+		if (wo.drought >= 3) wo.famine = wo.famine ? wo.famine + 1 : 1;
 		// mutual destructions of wills
 		let md = (ws, w1, w2) => {
 			if (!ws[w1] || !ws[w2]) return;
