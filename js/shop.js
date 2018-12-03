@@ -16,6 +16,5 @@ class Store {
 	interact(choice) {
 		let g = this.queue.pop();
 		g.mind = choice;
-		// TODO graphics?
 	}
 }

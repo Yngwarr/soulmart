@@ -15,6 +15,15 @@ function iterate() {
 		update_population(village.population);
 		update_stock(store.stock);
 		update_icon_values(village.state);
+
+		if (village.population <= 0) {
+			gameover(false);
+		}
+
+		if (village.population >= 1500 && no_bads()) {
+			gameover(true);
+		}
+
 		return;
 	}
 	let god = _.last(store.queue);
@@ -41,12 +50,13 @@ async function ans(ch) {
 				return false;
 			}
 			store.stock -= hi;
+			if (god.mood < 3) ++god.mood;
 			console.log('"Sure, why not?"');
 			break;
 		case 'n':
 			a = GOD_BAD;
 			console.log('"Are you freakin\' kidding me?"');
-			if (god.mood > 1) timeout = 1000;
+			if (god.mood > 1) timeout = 500;
 			--god.mood;
 			set_god(god.name, true);
 			toggle_dialog(false);
@@ -113,4 +123,10 @@ function replies(lo) {
 		`"Are you taking ${lo} souls or what?"`,
 	];
 	return [y, n, meh].map(_.sample);
+}
+
+function no_bads() {
+	return ['drought', 'famine', 'grief', 'plague', 'war'].filter((ch) => {
+		return village.state[ch] > 0;
+	}).length === 0;
 }

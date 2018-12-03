@@ -8,6 +8,7 @@ var land_scene;
 var desc_scene;
 var buttons_first_cont;
 var buttons_choise_cont;
+var land_button_next;
 const shop_file = 'img/shop.png';
 const land_file = 'img/land.png';
 const wigwam_file = 'img/wigwam.png';
@@ -42,6 +43,7 @@ var text_soul;
 var text_app;
 var text_pop;
 var text_lack;
+var text_gameover;
 var timer_lack;
 var answer_line = {};
 var icons = {};
@@ -53,6 +55,7 @@ var dialog_hover_style;
 var char_style;
 var char_up_style;
 var char_down_style;
+var wigwams_container;
 
 let store;
 let village;
@@ -109,7 +112,16 @@ function pixi_setup() {
 		dropShadowAngle: Math.PI / 6,
 		dropShadowDistance: 2,
 	});
-    var gameover_style = new PIXI.TextStyle({fill: '#510675', fontSize: 70});
+    var gameover_style = new PIXI.TextStyle({
+		fill: color.sec,
+		fontSize: 70,
+		dropShadow: true,
+		dropShadowColor: '#fff',
+		dropShadowBlur: 6,
+		dropShadowAngle: Math.PI / 6,
+		dropShadowDistance: 2,
+		align: 'center'
+	});
     dialog_style = new PIXI.TextStyle({
 		fill: color.prim,
 		fontStyle: 'italic',
@@ -137,7 +149,7 @@ function pixi_setup() {
 
     let land = new PIXI.Sprite(PIXI.loader.resources[land_file].texture);
     land_scene.addChild(land);
-    let wigwams_container = new PIXI.particles.ParticleContainer();
+    wigwams_container = new PIXI.Container();
     let wigwam_positions = [[113, 405], [307, 307], [472, 262], [553, 434], [670, 300]];
     for(var i = 0; i < 5; i++) {
         var wigwam = new PIXI.Sprite(PIXI.loader.resources[wigwam_file].texture);
@@ -167,7 +179,7 @@ function pixi_setup() {
 		}
 	}
 
-    var land_button_next = new PIXI.Text('Next >>', button_style);
+    land_button_next = new PIXI.Text('Next >>', button_style);
     land_button_next.position.set(500, 530);
 	button_mk_active(land_button_next);
     land_button_next.on('pointerdown', land_button_next_click);
@@ -175,8 +187,10 @@ function pixi_setup() {
 
     land_scene.addChild(wigwams_container);
 
-    text_pop = new PIXI.Text(`Population: ${INIT_POPULATION}`, button_style);
-    text_pop.position.set(250, 10);
+    text_pop = new PIXI.Text(`Population: ${INIT_POPULATION}`, 
+		JSON.parse(JSON.stringify(button_style)));
+	text_pop.style.align = 'center';
+    text_pop.position.set(300, 10);
     land_scene.addChild(text_pop);
 
     let start_sprite= new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
@@ -333,24 +347,32 @@ function pixi_setup() {
     shop_scene.addChild(text_soul);
     shop_scene.addChild(text_lack);
 
-	//let keys = Object.keys(village.state);
-	//for (let i in keys) {
-		//// TODO AAAAAGHAGHAGHAAAAA
-	//}
-
     // блок с надписью победы и поражения
-    text_win = new PIXI.Text('Win!', gameover_style);
-    text_win.position.set(330, 280);
-    text_win.visible = false;
-    text_gameover = new PIXI.Text('Game over', gameover_style);
-    text_gameover.position.set(230, 280);
+	text_gameover = new PIXI.Container();
+    text_gameover.addChild(new PIXI.Text('Wasted!', gameover_style));
+    text_gameover.addChild(new PIXI.Text("Now they're all dead...",
+		JSON.parse(JSON.stringify(dialog_style))));
+    text_gameover.addChild(new PIXI.Text("Back to menu",
+		JSON.parse(JSON.stringify(button_style))));
+    text_gameover.children[0].position.set(300, 150);
+    text_gameover.children[1].position.set(300, 230);
+    text_gameover.children[2].position.set(300, 400);
+    text_gameover.children[1].style.align = 'center';
+    text_gameover.children[2].style.align = 'center';
+    text_gameover.children[2].on('pointerdown', () => {
+		gameover_hide();
+		land_scene.visible = false;
+		start_scene.visible = true;
+		land_button_next.visible = true;
+		land_button_next.interactive = true;
+	});
+	button_mk_active(text_gameover.children[2]);
     text_gameover.visible = false;
 
     game.stage.addChild(start_scene);
     game.stage.addChild(shop_scene);
     game.stage.addChild(land_scene);
     game.stage.addChild(desc_scene);
-    game.stage.addChild(text_win);
     game.stage.addChild(text_gameover);
 }
 
@@ -462,6 +484,13 @@ function set_god(god_name, is_angry) {
 
 function update_population(pop) {
 	text_pop.text = 'Population: ' + pop;
+	for (let i = 0; i < wigwams_container.children.length; ++i) {
+		if (pop >= i * 200) {
+			wigwams_container.children[i].visible = true;
+		} else {
+			wigwams_container.children[i].visible = false;
+		}
+	}
 }
 
 function update_stock(st, app) {
@@ -524,21 +553,31 @@ function gameover(is_win) {
     buttons_first_cont.visible = true;
     desc_scene.visible = false;
     shop_scene.visible = false;
-    land_scene.visible = false;
-    start_scene.visible = true;
+    land_scene.visible = true;
+    start_scene.visible = false;
     // вывод надписи победы/поражание
-    text_win.visible = is_win;
-    text_gameover.visible = !is_win;
+	if (is_win) {
+		text_gameover.children[0].text = 'Victory!';
+		text_gameover.children[1].text = "Thank you for playing!";
+	} else {
+		text_gameover.children[0].text = 'Wasted!';
+		text_gameover.children[1].text = "Now they're all dead...";
+	}
+	land_button_next.visible = false;
+	land_button_next.interactive = false;
+    text_gameover.visible = true;
 }
 
 function gameover_hide() {
-    text_win.visible = false;
     text_gameover.visible = false;
+	land_button_next.visible = true;
+	land_button_next.interactive = true;
 }
 
 function toggle_dialog(on) {
 	let _on = !!on;
 	for (let k in answer_line) {
+		answer_line[k].alpha = _on ? 1 : .5;
 		answer_line[k].interactive = _on;
 	}
 }
@@ -568,5 +607,5 @@ function roll(arr) {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setInterval(resolve, ms));
 }

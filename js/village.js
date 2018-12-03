@@ -5,6 +5,13 @@ class Village {
 		this.year = 0;
 	}
 	new_game() {
+		// "factory reset"
+		store.gods.forEach((g) => {
+			g.mood = INIT_MOOD;
+		});
+		store.stock = INIT_STOCK;
+		village.population = INIT_POPULATION;
+
 		village.state = level(_.sample([0, 1, 2, 3]));
 		store.open();
 	}
@@ -30,14 +37,15 @@ class Village {
 			ws[w2] -= m;
 			//console.log(`${w1}: ${ws[w1]}, ${w2}: ${ws[w2]}`);
 		};
-		md(wo, "war", "birthrate");
-		md(wo, "war", "fun");
-		md(wo, "drought", "yield");
-		md(wo, "famine", "yield");
-		md(wo, "grief", "fun");
-		md(wo, "grief", "birthrate");
-		md(wo, "grief", "war");
-		md(wo, "plague", "birthrate");
+		md(wo, "birthrate", "war");
+		md(wo, "birthrate", "plague");
+		md(wo, "birthrate", "grief");
+		md(wo, "fun", "grief");
+		md(wo, "fun", "plague");
+		md(wo, "fun", "war");
+		md(wo, "yield", "drought");
+		md(wo, "yield", "famine");
+		md(wo, "yield", "plague");
 
 		// apply the wills
 		village.state = wo;
@@ -47,23 +55,25 @@ class Village {
 		let stock_gen = 0;
 		unroll(wo).forEach(w => {
 			switch (w) {
-				case "war":
 				case "plague":
+				case "famine":
 					new_pop -= 50;
 					++stock_gen;
 					break;
-				case "famine":
 				case "drought":
+				case "war":
 					new_pop -= 25;
 					++stock_gen;
 					break;
 				case "birthrate":
-				case "fun":
 					new_pop += 50;
 					--stock_gen;
 					break;
 				case "yield":
-					new_pop += 25;
+					new_pop += 10;
+					--stock_gen;
+					break;
+				case "fun":
 					--stock_gen;
 					break;
 				case "grief":
@@ -71,6 +81,9 @@ class Village {
 					break;
 			}
 		});
+		if (no_bads()) {
+			new_pop += 150;
+		}
 
 		// increase the stock the right way
 		store.stock += 15 + 3 + stock_gen;
