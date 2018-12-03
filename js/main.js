@@ -19,9 +19,9 @@ const dionysus_file = 'img/gods/dionysus.png';
 const anubis_file = 'img/gods/anubis.png';
 const aphrodite_file = 'img/gods/aphrodite.png';
 
-//const shop_buttons_file = 'img/shop_buttons.png';
-
 const panth_file = 'img/pantheon.png';
+
+let icon_files = {};
 
 const color = { prim: '#510675', sec: '#4c37a5' };
 
@@ -36,12 +36,16 @@ var text_app;
 var text_pop;
 var text_lack;
 var timer_lack;
-var icons = {}
+var answer_line = {};
+var icons = {};
+
 var button_style;
 var button_hover_style;
 var dialog_style;
 var dialog_hover_style;
-var answer_line = {};
+var char_style;
+var char_up_style;
+var char_down_style;
 
 let store;
 let village;
@@ -53,6 +57,13 @@ function init() {
 	game = new PIXI.Application(WIDTH, HEIGHT);
     game = new PIXI.Application(WIDTH, HEIGHT);
     document.getElementById('game_field').appendChild(game.view);
+
+	['birthrate', 'fun', 'yield', 'drought', 'famine',
+		'grief', 'plague', 'war'].forEach((d) => {
+			icon_files[d] = `img/icons/${d}.png`;
+			PIXI.loader.add(icon_files[d]);
+		});
+
     PIXI.loader
         .add(shop_file)
         .add(land_file)
@@ -63,7 +74,6 @@ function init() {
         .add(dionysus_file)
         .add(anubis_file)
         .add(aphrodite_file)
-        //.add(shop_buttons_file)
         .add(panth_file)
         .load(pixi_setup);
 }
@@ -107,6 +117,10 @@ function pixi_setup() {
 		dropShadowAngle: Math.PI / 6,
 		dropShadowDistance: 2,
 	});
+    char_style = new PIXI.TextStyle({
+		fill: '#510675',
+		fontSize: 24
+	});
 
     let land = new PIXI.Sprite(PIXI.loader.resources[land_file].texture);
     land_scene.addChild(land);
@@ -118,6 +132,28 @@ function pixi_setup() {
         wigwams_container.addChild(wigwam);
     }
 
+	{
+		let acc = [10, 10, 10];
+		let good = ['birthrate', 'fun', 'yield'];
+		for (let k in icon_files) {
+			let nice = good.includes(k);
+			icons[k] = [new PIXI.Sprite(PIXI.loader.resources[icon_files[k]].texture),
+				new PIXI.Text('0', char_style)];
+			if (nice) {
+				icons[k][0].position.set(WIDTH - 52 - acc[0], acc[1]);
+				icons[k][1].position.set(WIDTH - 82 - acc[0], acc[1] + 25);
+				icons[k][1].style.align = 'left';
+				acc[1] += 64;
+			} else {
+				icons[k][0].position.set(acc[0], acc[2]);
+				icons[k][1].position.set(acc[0]+64, acc[2] + 25);
+				acc[2] += 64;
+			}
+			land_scene.addChild(icons[k][0]);
+			land_scene.addChild(icons[k][1]);
+		}
+	}
+
     var land_button_next = new PIXI.Text('Next >>', button_style);
     land_button_next.position.set(500, 530);
 	button_mk_active(land_button_next);
@@ -127,7 +163,7 @@ function pixi_setup() {
     land_scene.addChild(wigwams_container);
 
     text_pop = new PIXI.Text(`Population: ${INIT_POPULATION}`, button_style);
-    text_pop.position.set(400, 50);
+    text_pop.position.set(250, 10);
     land_scene.addChild(text_pop);
 
     /*
