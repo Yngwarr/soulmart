@@ -10,6 +10,7 @@ var buttons_first_cont;
 var buttons_choise_cont;
 const shop_file = 'img/shop.png';
 const land_file = 'img/land.png';
+const panth_file = 'img/pantheon.png';
 const wigwam_file = 'img/wigwam.png';
 const table_file = 'img/table.png';
 
@@ -21,8 +22,7 @@ const aphrodite_file = 'img/gods/aphrodite.png';
 
 const shop_buttons_file = 'img/shop_buttons.png';
 
-const panth_file = 'img/pantheon.png';
-
+const land_icons_file = 'img/all_icons.png';
 
 var odin_sprite;
 var dajbog_sprite;
@@ -59,6 +59,7 @@ function init() {
         .add(aphrodite_file)
         .add(shop_buttons_file)
         .add(panth_file)
+        .add(land_icons_file)
         .load(pixi_setup);
 }
 
@@ -72,6 +73,7 @@ function pixi_setup() {
     desc_scene.visible = false;
 
     var button_style = new PIXI.TextStyle({fill: '#510675', fontSize: 36});
+    var icon_value_style = new PIXI.TextStyle({fill: '#510675', fontSize: 20});
     dialog_style = new PIXI.TextStyle({
 		fill: '#510675',
 		fontStyle: 'italic',
@@ -112,18 +114,42 @@ function pixi_setup() {
 
     land_scene.addChild(wigwams_container);
 
-    text_pop = new PIXI.Text('Population: ' + INIT_POPULATION, button_style);
-    text_pop.position.set(400, 50);
-    land_scene.addChild(text_pop);
-
-    /*
-    icons = new PIXI.Sprite(PIXI.loader.resources[icons_file].texture);
+    icons = new PIXI.Sprite(PIXI.loader.resources[land_icons_file].texture);
+    icons.position.set(18, 10);
     land_scene.addChild(icons);
 
-    text_pop = new PIXI.Text('Population: ' + INIT_POPULATION, button_style);
-    text_pop.position.set(400, 50);
-    land_scene.addChild(text_pop);
-    */
+    // значение иконок
+    text_drought = new PIXI.Text(0, icon_value_style);
+    text_drought.position.set(18, 80);
+    land_scene.addChild(text_drought);
+
+    text_war = new PIXI.Text(0, icon_value_style);
+    text_war.position.set(118, 80);
+    land_scene.addChild(text_war);
+
+    text_grief = new PIXI.Text(0, icon_value_style);
+    text_grief.position.set(218, 80);
+    land_scene.addChild(text_grief);
+
+    text_famine = new PIXI.Text(0, icon_value_style);
+    text_famine.position.set(318, 80);
+    land_scene.addChild(text_famine);
+
+    text_plague = new PIXI.Text(0, icon_value_style);
+    text_plague.position.set(418, 80);
+    land_scene.addChild(text_plague);
+
+    text_fun = new PIXI.Text(0, icon_value_style);
+    text_fun.position.set(518, 80);
+    land_scene.addChild(text_fun);
+
+    text_yield = new PIXI.Text(0, icon_value_style);
+    text_yield.position.set(618, 80);
+    land_scene.addChild(text_yield);
+
+    text_birthrate = new PIXI.Text(INIT_POPULATION, icon_value_style);
+    text_birthrate.position.set(718, 80);
+    land_scene.addChild(text_birthrate);
 
     let start_sprite= new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
     let shop = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
@@ -388,6 +414,17 @@ function answer_n_click() {
 
 function answer_b_click() {
 	ans('b');
+}
+
+function update_icon_values(values) {
+    text_drought.text = values.drought;
+    text_war.text = values.war;
+    text_grief.text = values.grief;
+    text_famine.text = values.famine;
+    text_plague.text = values.plague;
+    text_fun.text = values.fun;
+    text_yield.text = values.yield;
+    text_birthrate.text = values.birthrate;
 }
 
 // {a: 2, b: 1} -> ["a", "a", "b"]
