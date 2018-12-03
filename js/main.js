@@ -451,6 +451,12 @@ function update_answers() {
 	answer_line.b.text = meh;
 }
 
+function update_icon_values(values) {
+	for (let k in values) {
+		icons[k][1].text = values[k];
+	}
+}
+
 function answer_y_click() {
 	if (ans('y')) {
 		update_answers();

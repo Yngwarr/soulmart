@@ -1,6 +1,9 @@
 function play() {
 	console.log("Let's play a game!");
 	village.new_game();
+	update_population(village.population);
+	update_stock(store.stock);
+	update_icon_values(village.state);
 	iterate();
 }
 
@@ -11,6 +14,7 @@ function iterate() {
 		village.new_year();
 		update_population(village.population);
 		update_stock(store.stock);
+		update_icon_values(village.state);
 		return;
 	}
 	let god = _.last(store.queue);
