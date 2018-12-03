@@ -13,11 +13,18 @@ const land_file = 'img/land.png';
 const wigwam_file = 'img/wigwam.png';
 const table_file = 'img/table.png';
 
+// картинки богов (весёлые)
 const odin_file = 'img/gods/odin.png';
 const dajbog_file = 'img/gods/dajbog.png';
 const dionysus_file = 'img/gods/dionysus.png';
 const anubis_file = 'img/gods/anubis.png';
 const aphrodite_file = 'img/gods/aphrodite.png';
+// картинки богов (злые)
+const odin_angry_file = 'img/gods/odin_angry.png';
+const dajbog_angry_file = 'img/gods/dajbog_angry.png';
+const dionysus_angry_file = 'img/gods/dionysus_angry.png';
+const anubis_angry_file = 'img/gods/anubis_angry.png';
+const aphrodite_angry_file = 'img/gods/aphrodite_angry.png';
 
 const panth_file = 'img/pantheon.png';
 
@@ -74,6 +81,12 @@ function init() {
         .add(dionysus_file)
         .add(anubis_file)
         .add(aphrodite_file)
+        .add(odin_angry_file)
+        .add(dajbog_angry_file)
+        .add(dionysus_angry_file)
+        .add(anubis_angry_file)
+        .add(aphrodite_angry_file)
+        .add(shop_buttons_file)
         .add(panth_file)
         .load(pixi_setup);
 }
@@ -272,12 +285,13 @@ function pixi_setup() {
     desc_scene.addChild(desc_back);
 
     // экран магазина
+    shop_scene.addChild(shop);
+    // спрайты богов (весёлые)
     odin_sprite = new PIXI.Sprite(PIXI.loader.resources[odin_file].texture);
     dajbog_sprite = new PIXI.Sprite(PIXI.loader.resources[dajbog_file].texture);
     dionysus_sprite = new PIXI.Sprite(PIXI.loader.resources[dionysus_file].texture);
     anubis_sprite = new PIXI.Sprite(PIXI.loader.resources[anubis_file].texture);
     aphrodite_sprite = new PIXI.Sprite(PIXI.loader.resources[aphrodite_file].texture);
-    shop_scene.addChild(shop);
     odin_sprite.visible = false;
     dajbog_sprite.visible = false;
     dionysus_sprite.visible = false;
@@ -288,6 +302,25 @@ function pixi_setup() {
     shop_scene.addChild(dionysus_sprite);
     shop_scene.addChild(anubis_sprite);
     shop_scene.addChild(aphrodite_sprite);
+    // спрайты богов (злые)
+
+    odin_angry_sprite = new PIXI.Sprite(PIXI.loader.resources[odin_angry_file].texture);
+    dajbog_angry_sprite = new PIXI.Sprite(PIXI.loader.resources[dajbog_angry_file].texture);
+    dionysus_angry_sprite = new PIXI.Sprite(PIXI.loader.resources[dionysus_angry_file].texture);
+    anubis_angry_sprite = new PIXI.Sprite(PIXI.loader.resources[anubis_angry_file].texture);
+    aphrodite_angry_sprite = new PIXI.Sprite(PIXI.loader.resources[aphrodite_angry_file].texture);
+    odin_angry_sprite.visible = false;
+    dajbog_angry_sprite.visible = false;
+    dionysus_angry_sprite.visible = false;
+    anubis_angry_sprite.visible = false;
+    aphrodite_angry_sprite.visible = false;
+    shop_scene.addChild(odin_angry_sprite);
+    shop_scene.addChild(dajbog_angry_sprite);
+    shop_scene.addChild(dionysus_angry_sprite);
+    shop_scene.addChild(anubis_angry_sprite);
+    shop_scene.addChild(aphrodite_angry_sprite);
+
+    // стал на экране магазина
     shop_scene.addChild(table);
 
     // кнопки ответа богу
@@ -416,21 +449,27 @@ function land_button_next_click() {
     shop_scene.visible = true;
 }
 
-function set_god(god_name) {
+function set_god(god_name, is_angry) {
     console.log('set god: ' + god_name);
+    is_angry = is_angry ? 1 : 0;
     god_sprite_map = {
-        Odin: odin_sprite,
-        Dajbog: dajbog_sprite,
-        Dionysus: dionysus_sprite,
-        Anubis: anubis_sprite,
-        Aphrodite: aphrodite_sprite
+        Odin: [odin_sprite, odin_angry_sprite],
+        Dajbog: [dajbog_sprite, dajbog_angry_sprite],
+        Dionysus: [dionysus_sprite, dionysus_angry_sprite],
+        Anubis: [anubis_sprite, anubis_angry_sprite],
+        Aphrodite: [aphrodite_sprite, aphrodite_angry_sprite]
     }
     odin_sprite.visible = false;
     dajbog_sprite.visible = false;
     dionysus_sprite.visible = false;
     anubis_sprite.visible = false;
     aphrodite_sprite.visible = false;
-    god_sprite_map[god_name].visible = true;
+    odin_angry_sprite.visible = false;
+    dajbog_angry_sprite.visible = false;
+    dionysus_angry_sprite.visible = false;
+    anubis_angry_sprite.visible = false;
+    aphrodite_angry_sprite.visible = false;
+    god_sprite_map[god_name][is_angry].visible = true;
 }
 
 function update_population(pop) {
