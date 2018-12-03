@@ -11,6 +11,7 @@ var buttons_choise_cont;
 const shop_file = 'img/shop.png';
 const land_file = 'img/land.png';
 const wigwam_file = 'img/wigwam.png';
+const table_file = 'img/table.png';
 
 const odin_file = 'img/gods/odin.png';
 const dajbog_file = 'img/gods/dajbog.png';
@@ -33,6 +34,8 @@ var text_soul;
 var text_app;
 var text_pop;
 var icons = {}
+var dialog_style;
+var dialog_hover_style;
 
 let store;
 let village;
@@ -48,6 +51,7 @@ function init() {
         .add(shop_file)
         .add(land_file)
         .add(wigwam_file)
+        .add(table_file)
         .add(odin_file)
         .add(dajbog_file)
         .add(dionysus_file)
@@ -68,6 +72,26 @@ function pixi_setup() {
     desc_scene.visible = false;
 
     var button_style = new PIXI.TextStyle({fill: '#510675', fontSize: 36});
+    dialog_style = new PIXI.TextStyle({
+		fill: '#510675',
+		fontStyle: 'italic',
+		fontSize: 24,
+		dropShadow: true,
+		dropShadowColor: '#fff',
+		dropShadowBlur: 6,
+		dropShadowAngle: Math.PI / 6,
+		dropShadowDistance: 0,
+	});
+    dialog_hover_style = new PIXI.TextStyle({
+		fill: '#510675',
+		fontStyle: 'italic',
+		fontSize: 24,
+		dropShadow: true,
+		dropShadowColor: '#fff',
+		dropShadowBlur: 6,
+		dropShadowAngle: Math.PI / 6,
+		dropShadowDistance: 2,
+	});
 
     let land = new PIXI.Sprite(PIXI.loader.resources[land_file].texture);
     land_scene.addChild(land);
@@ -103,6 +127,7 @@ function pixi_setup() {
 
     let start_sprite= new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
     let shop = new PIXI.Sprite(PIXI.loader.resources[shop_file].texture);
+    let table = new PIXI.Sprite(PIXI.loader.resources[table_file].texture);
 
     // начальное меню
     buttons_first_cont = new PIXI.Container();
@@ -193,7 +218,7 @@ function pixi_setup() {
     desc_scene.addChild(panth);
 
     var desc_back = new PIXI.Text('<< Back', button_style);
-    desc_back.position.set(100, 500);
+    desc_back.position.set(150, 480);
     desc_back.buttonMode = true;
     desc_back.interactive = true;
     desc_back.on('pointerdown', desc_back_click);
@@ -216,6 +241,7 @@ function pixi_setup() {
     shop_scene.addChild(dionysus_sprite);
     shop_scene.addChild(anubis_sprite);
     shop_scene.addChild(aphrodite_sprite);
+    shop_scene.addChild(table);
 
     // кнопки ответа богу
     shop_butons = new PIXI.Sprite(PIXI.loader.resources[shop_buttons_file].texture);
@@ -242,17 +268,18 @@ function pixi_setup() {
     answer_b.on('pointerdown', answer_b_click);
     shop_scene.addChild(answer_b);
 
-    text_app = new PIXI.Text('"I want ' + INIT_APPETITE[0] + ' souls!', button_style);
-    text_app.position.set(400, 50);
-    text_soul = new PIXI.Text('You have ' + INIT_STOCK + ' souls', button_style);
-    text_soul.position.set(400, 100);
+    text_app = new PIXI.Text(`"I want ${INIT_APPETITE[0]} souls!"`, dialog_style);
+    text_app.position.set(500, 50);
+	dialog_mk_active(text_app);
+    text_soul = new PIXI.Text(`You have ${INIT_STOCK} souls`, dialog_style);
+    text_soul.position.set(500, 100);
     shop_scene.addChild(text_app);
     shop_scene.addChild(text_soul);
 
-	let keys = Object.keys(village.state);
-	for (let i in keys) {
-		// TODO AAAAAGHAGHAGHAAAAA
-	}
+	//let keys = Object.keys(village.state);
+	//for (let i in keys) {
+		//// TODO AAAAAGHAGHAGHAAAAA
+	//}
 
     game.stage.addChild(start_scene);
     game.stage.addChild(shop_scene);
@@ -260,10 +287,23 @@ function pixi_setup() {
     game.stage.addChild(desc_scene);
 }
 
+function dialog_mk_active(text) {
+	text.interactive = true;
+	text.on('pointerover', dialog_hover);
+	text.on('pointerout', dialog_out);
+}
+
+function dialog_hover() {
+	this.style = dialog_hover_style;
+}
+
+function dialog_out() {
+	this.style = dialog_style;
+}
+
 function button_start_click() {
 	village.state = level(_.sample([0, 1, 2, 3]));
-    land_scene.visible = true;
-    start_scene.visible = false;
+	show_land();
 	play();
 }
 
@@ -329,12 +369,6 @@ function set_god(god_name) {
     god_sprite_map[god_name].visible = true;
 }
 
-function show_population(pop) {
-}
-
-function show_stock(st) {
-}
-
 function update_population(pop) {
     text_pop.text = 'Population: ' + pop;
 }
@@ -354,10 +388,6 @@ function answer_n_click() {
 
 function answer_b_click() {
 	ans('b');
-}
-
-function turn_end() {
-
 }
 
 // {a: 2, b: 1} -> ["a", "a", "b"]

@@ -85,5 +85,6 @@ class Village {
 		if (village.population === 0) {
 			console.log("Game Over");
 		}
+		iterate();
 	}
 }
